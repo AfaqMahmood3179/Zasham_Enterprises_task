@@ -1,0 +1,49 @@
+﻿@page "/product"
+@using Zasham_Enterprises_task.Shared
+@inject HttpClient Http
+
+<PageTitle>Products </PageTitle>
+
+<h3>Product</h3>
+
+<p>This component demonstrates fetching data of products from the server.</p>
+<button onclick="Fetch_All_Products"></button>
+
+@if (Product == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Id</th>
+                <th>Product Name</th>
+                <th>Product Description</th>
+                <th>Product Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Product)
+            {
+                <tr>
+                    <td>@product.product_id</td>
+                    <td>@product.product_name</td>
+                    <td>@product.product_desc</td>
+                    <td>@product.product_pricw</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Product[]? product;
+
+    private async void Fetch_All_Products()
+    {
+        product = await Http.GetFromJsonAsync<Product[]>("Product List");
+    }
+}
+

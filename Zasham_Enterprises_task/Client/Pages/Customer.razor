@@ -1,0 +1,51 @@
+﻿@page "/customer"
+@using Microsoft.AspNetCore.Authorization;
+@using Zasham_Enterprises_task.Shared
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Customers</PageTitle>
+
+<h3>Customers</h3>
+
+<p>This component demonstrates fetching data of customers from the server.</p>
+<button onclick="Fetch_All_Customers"></button>
+
+@if (cust == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Customer_name</th>
+                <th>Customer_email</th>
+                <th>Customer_phone</th>
+                <th>Customer_address</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in cust)
+            {
+                <tr>
+                    <td>@customer.Customer_name</td>
+                    <td>@customer.Customer_email</td>
+                    <td>@customer.Customer_phone</td>
+                    <td>@customer.Customer_address</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Customer[]? cust;
+
+    private async void FetchAllCustomers()
+    {
+        cust = await Http.GetFromJsonAsync<Customer[]>("Customer List");
+    }
+}
+
